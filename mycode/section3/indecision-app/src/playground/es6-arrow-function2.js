@@ -24,8 +24,8 @@ const user = {
 	// es6 method syntax keeps the this binding logic like es5 functions
 	// printPlacesLived: function() {
 	printPlacesLived() {
-		console.log(this.name);
-		console.log(this.cities);
+		// console.log(this.name);
+		// console.log(this.cities);
 
 		// this.cities.forEach(function(city) {
 		// 	console.log(this.name + ' has lived in ' + city); //this is out of scope 'two level nesting'
@@ -38,10 +38,29 @@ const user = {
 		// });
 
 		// es6 arrow gets its parent scope soo no need for workaround
-		this.cities.forEach((city) => {
-			console.log(this.name + ' has lived in ' + city); //this is out of scope 'two level nesting'
+		// this.cities.forEach((city) => {
+		// 	console.log(this.name + ' has lived in ' + city); //this is out of scope 'two level nesting'
+		// });
+		
+		const cityMessages = this.cities.map((city) => {
+			return this.name  + ' has lived in ' + city + '!';
 		});
+		return cityMessages;
 	}
 };
 
-user.printPlacesLived();
+console.log(user.printPlacesLived());
+
+// Challenge
+
+const multiplier = {
+	// numbers array of numbers
+	// multiplyBy - single number
+	numbers: [233, 4545, 555, 2, 55, 86, 10],
+	multiplyBy(x) {
+		const multipliedNums = this.numbers.map((num) => num * x);
+		return multipliedNums;
+	}
+}
+
+console.log(multiplier.multiplyBy(3));
