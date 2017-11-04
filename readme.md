@@ -156,3 +156,79 @@ takes props argument. coostructor(props) {super(props); ...}
 ## Lecture 45 - Persist data in localStorage
 
 * localStorage is standard object that is session persistent. till window gets closed. you can store with keys and all data stored is String. JSON can be used to overcome this. methods: localStorage.setItem('key', 'value') localStorage.getItem('key') returns 'value' 
+
+# Section 6 - Webpack
+
+## Lecture 48 - What is Webpack
+
+* Webpack bundles all project in a single bundle.js file to import in the html code. 
+* It promises compression and performance while taking care of dependencies
+* It requires proper project structure 
+* It enforces modularity
+
+## Lecture 49 - Avoid Global Modules
+
+* Global modules live outside of project so break portability
+** In yarn they need changing the path to run them
+** Other people do not now which tools we use to build etc our project
+** Versioning problems
+
+* Rule of thumb. Install only locally , add scripts to package.json for running tools. bundle up the project
+
+## Lecture 50 - Install webpack
+
+* webpack is locally installed with yarn/npm
+* webpack is called with script in package.json
+* webpack to run needs webpack.config.js file in project root dir
+* webpack.config.js is run by webpack with node.js
+* webpack.config.js exports an obkect that conains:
+	** entry point js file where app code resides
+	** output point (bundle.js) that is imported into index.html with <script> tag
+
+## Lecture 51 - Named exports
+
+
+* Webpack uses ES6 style file named import/export.
+	** Node Export: module.exports = { someObject, someFunction }
+	** Webpack Export: export = { someObject, someFunction  }
+	** alternatively individual exports: export const someFunction = ...
+	** Node Import: const { someObject } = require('./someFile.js');
+	** Webpack Import import { someObject, someFunction} from './someFile.js' 
+
+## Lecture 51 - Default exports
+
+* default exports are different from named in the following ways
+	** we can have maximum 1 default export
+	** default export is not name bound. we can call it by any name we want
+	** the syntax is
+		** Individual export: const someObject = { ... }; export default someObject; or anonymous: export default { ... };
+		** group export export { someNamedFunc, defaultFunc as default};
+		** IMport: import defaultFuncCalledAnyname, {someNamedFunc } from './someFile.js'
+
+## Lecture 52 - Install NPM Modules
+
+* easy. use ES6 syntax import using ususally default import (if we dont need something specific)
+* we need to install first (e.g yarn add npmModule@version.subversion.minor)
+* import React from 'react';
+
+## Lecture 53 - Configure Webpack to use babel to translate jsx
+	* webpack cannot translate jsx by itself, needs a loader -> babel
+	* yarn add babel-core (like cli but made to be run from webpack)
+	* yarn add babel-loader (the actual babel loader to be used by webpack to translate jsx)
+	* add modules object to ewbpack config file
+		module: {
+		rules: [{
+			loader: 'babel-loader',
+			test: /\.js$/,
+			exclude: /node_modules/
+
+		}]
+	}
+	* add .babelrc file in project root to add the presets in JSON style
+	{
+		"presets": [
+			"env",
+			"react"
+		]
+	}
+	* rerun webpack (yarn run build script)
