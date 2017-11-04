@@ -44,10 +44,26 @@ class Counter extends React.Component {
     this.handleMinusOne = this.handleMinusOne.bind(this);
     //React Component State 
     this.state = {
+      // using defaultProps
+      //count: props.count
+
+      // using persistence through localStorage
       count: 0
     }
   }
-  
+  componentDidMount() {
+    const countString = localStorage.getItem('count');
+    const count = parseInt(countString,10);
+    if(!isNaN(count)) {
+      this.setState(() => ({ count }));
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.count !== this.state.count) {
+      localStorage.setItem('count',this.state.count);
+    }
+  }
+
   handleAddOne(){
     //this dowsne work as it does not rerender
     //this.state.count++;
@@ -86,5 +102,10 @@ class Counter extends React.Component {
   }
 }
 
+// Counter.defaultProps = {
+//   count: 0
+// };
+
+// ReactDOM.render(<Counter count={100} />,document.getElementById('app'));
 ReactDOM.render(<Counter />,document.getElementById('app'));
 

@@ -94,5 +94,65 @@ takes props argument. coostructor(props) {super(props); ...}
 * The value is rendered in JSX using {this.state.someParam}
 * Event handlers change the state by calling this.setState((prevState) => return {someParam: prevState.someParam +1})
 * if the action does not depent on prevState it is not passed as parameter e.g. this.steState(() => return {someParam: initialValue})
-* So setState method is a React Component Calss method that gets the state object as parameter and returns it modified for the rendered
-  and for the next setState call. state is a Component Class attribute.
+* So setState method is a React Component Calss method that gets the state object as parameter and returns it modified for the rendered and for the next setState call. state is a Component Class attribute.
+
+## Lecture 36 - State and Subcomponents
+
+* To use state in hierarchical structures with subcomponents the father component defines the state object as a class object.
+  it defines also class methods that change the state. 
+* These methods are defined as standard event methods. (bind in constructor, called as this.functionName etc). 
+* They are passed as callbacks with the prop mechanism. the child component calls the parent method as a reference={this.props.functionName} this causes a stahge of state and subsequently a re-render. 
+* Callback props is a way of upstream parameter passing and communicationg
+* Upstream parameter passing is done with callback prop methods paramters which are defined in the parent component and changed in the child component.
+* A component cannot change the prop attributes as they belong to the parent
+* A prop change in the parent causes the child component to re-render
+
+# Section 5 - Stateless Functional React Components
+
+## Lecture 40 - Stateless Functional React Components
+
+* faster
+* easier to read
+* easier to test
+* best candidates are components with just a render method
+* Syntax: const StatelessFuncComp = (props) => {
+	return (/* Valid JSX to Render  e.g <p>{props.someParam}</p>*/);
+	};
+* Are called as regular React Components: 
+  <StatelessFuncComp someParam={Some Parameter} />
+
+ ## Lecture 41 - Default Props
+
+ * default props is a way of setting default values to a component prop in case this is not defined int he component
+ call in the JSX of its parent (of main render)
+ * they give some sort of flexibility
+ * they apply both in statefull class and statelss functional react components. 
+ * e.g. DefaultProp OBject definition:: SomeComponent.defaultProps = {
+ 	someProp: InitialValue
+ }
+
+  setting a non-default prop value is done as always by passing some value in the prop in the component call in JSX <SomeComponent someProp={nonDefualtValue} />
+
+ * in stateful components we can pass as prop using the defaultProp mechanism even a state attribute. in that case instead of giving the initial value in the default state definition we do it in the defaultProp definition giving the ability to the caller to give its own initial value.
+ in the intiial state definition instead of 
+ 	this.state = { someProp: intialVal} we use this.state = { someProp: props.someProp} leaving the initialization to be done by the defaultProp object
+
+## Lecture 42 - React Dev Tools
+
+* react dev tools is a chrome extention. it adds a new tab in dev tools. nice debugging tool. try it on facebook.com to see its full glory
+
+ ## Lecture 43 - Passiing callbacks down the component hierarchy tree
+
+ * passing a callback down is done with the props as a reference as we saw earlier. however from 2nd level when we want to pass an argument from the grandchild component up to the grandfather we cannot pass is as e.g. onClick={props.someMethod(props.someParam)} it will break, we have to use a wrapper arrow function utilizing the e (event object) like this onClick={(e) => { props.someMethod(props.someParam) }}
+
+## Lecture 44 - Lifecycle Methods (Available only to Stateful Class Components) (https://reactjs.org/docs/react-component.html)
+  
+* componentDidMount() - called one time when component is mount to ReactDOM
+* componentDidUpdate(prevProps, prevState) - called every time component re-renders/state changes/props change
+** has access to this.props and this.state
+** gets as params the previous Props and State
+* componentWillUnmount() - called one time when component is unmount from ReactDOM
+
+## Lecture 45 - Persist data in localStorage
+
+* localStorage is standard object that is session persistent. till window gets closed. you can store with keys and all data stored is String. JSON can be used to overcome this. methods: localStorage.setItem('key', 'value') localStorage.getItem('key') returns 'value' 
