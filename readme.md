@@ -232,3 +232,56 @@ takes props argument. coostructor(props) {super(props); ...}
 		]
 	}
 	* rerun webpack (yarn run build script)
+
+## Lecture 55 - Import React Components
+	* ES6 class can be default exported dierectlu in individual export mode e.g export default class ReactComponent ....
+	* using anonymous default export hinders debug with react dev tools as they appear 'Unknown' in the DOM tree. prefer 2 step named default export for e.g. stateless fucntional components
+
+## Lecture 55 - Webpack Source Maps
+	* debugging is a pain without proper tools.
+	* code that runs is translated  bundled code in bundle.js. so bugs are difficult to track
+	* in webpack.config.js we can set devtools entry for a proper tool like source-map which point bugs on the original code 
+	thus facilitating our debugging
+	code: 	devtool: 'cheap-module-eval-source-map'
+
+## Lecture 56 - webpack dev-server
+	* super-fast in-memory dev-server to facilitate development.
+	* no need to run build(with watch for changes) script and live-server to biew our app in parallel. dev-server does both
+	faster. 
+	* Steps to add it: 
+		** local install: $ yarn add webpack-dev-server
+		** add object to webpack.config.js (e.g. same as output path)
+			devServer: {
+				contentBase: path.join(__dirname, 'public')
+			}
+		** set script in package.json
+			    "dev-server": "webpack-dev-server"
+		** run script $ yarn run dev-server
+
+## Lecture 57 - Class Properties
+	* Experimental - to be used we need babel to translate to old compatible code
+	* install module: yarn add babel-plugin-transform-class-properties
+	* add to babel params in .babelrc
+		"plugins": [
+		"transform-class-properties"
+	]
+	* removes the need for constructor and bind workaround for handlers
+
+	class OldSyntax {
+  constructor() {
+    this.name = 'Mike';
+    this.getGreeting = this.getGreeting.bind(this);
+  }
+  getGreeting() {
+    return `Hi. My name is ${this.name}`;
+  }
+}
+
+// ----------------------------
+
+class NewSyntax {
+  name = 'Jen';
+  getGreeting = () => {
+    return `Hi. My name is ${this.name}`;
+  };
+}
