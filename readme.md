@@ -413,3 +413,30 @@ e.g div {
 * add favicon 
 ** add a small 16*16 png image in the project
 ** add  	<link rel="icon" type="image/png" href="/images/favicon.png" /> to html header
+
+# Section 9 - React Router
+
+## Lecture 77 - Setting Up
+
+* React Router enables client side routing in our app (faster, we dont have to go to the server to fetch data)
+* We add react-router-dom with yarn to our project. This is for webapps, for native apps we use react-router-native
+* we import the components i want to use in our main app js file.
+import { BrowserRouter, Route } from 'react-router-dom';
+* we set up some routes by adding the BrowserRouter component in our main jsx template. in the browser Router we add some Routes passing as props the path and the component to call
+    <BrowserRouter>
+        <div>
+            <Route path="/" component={ExpenseDashboardPage} exact={true} />
+            <Route path="/create" component={AddExpensePage} />
+            <Route path="/edit" component={EditxpensePage} />
+            <Route path="/help" component={HelpPage} />
+        </div>
+    </BrowserRouter>
+* the components to call can be react components
+* path searching is not exact but subset by default /create calls / also. to avoid that we set exat={true} in the parent path
+* webpack does server routing by default and searches for these html pages in the server. to enforce client side routing we add 
+* a parameter(historyapifallpback in the webpack config file
+	devServer: {
+		contentBase: path.join(__dirname, 'public'),
+		historyApiFallback: true
+	}
+* the parameter can be set instead in cli in the run script --history-api-fallback
