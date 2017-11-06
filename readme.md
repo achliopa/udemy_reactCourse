@@ -330,3 +330,86 @@ ReactDOM.render((
         </div>
     </Layout>
     ), document.getElementById('app'));
+    
+# Section 8 - Styling React with SCSS
+
+## Lecture 64 - Adding SCSS support  in Webpack
+
+* First step is to add CSS support in webpack
+** add style-loader and css-loader with yarn
+** add a new rule in webpack to use these loaders for css files
+  {
+			test: /\.scss$/,
+			use: [
+				'style-loader',
+				'css-loader',
+				]
+		}
+** add the stylesheet no in the html file but in the app js file with import
+ e.g import './styles/styles.scss';
+* add support for scss to webpack
+** add sass-loader and node-sass with yarn
+** modify the rule in webpack config for css
+    {
+			test: /\.scss$/,
+			use: [
+				'style-loader',
+				'css-loader',
+				'sass-loader'
+				]
+		}
+** change css stylesheet to scss
+** change the import to scss
+** restart webpack
+
+## Lecture 65 - Styling with SCSS
+
+* scss allows breaking stylesheets into multiple files
+** we name the partial like _partial.scss
+** we import the partial into the main stylesheet with @import 'somepath/partial'
+** scss allows nesting of elements 
+e.g div {
+        
+      h1 {
+        
+      }
+    }
+
+** scss allows use of rem instead of pixel
+** css allows using variables for properties eg. 
+  $brandcolor: red;
+  h1 {
+    color: $brandcolor;
+  }
+  
+  h2 {
+    color: $brandcolor;
+  }
+  
+## Lecture 66 - Reset Browser 
+
+* Use normalize.css
+** add normalize.css with yarn
+** import it to project js file with: import 'normalize.css/normalize.css';
+** change webpack rule to support both css and scss with: test: /\.s?css$/, 
+** enjoy...
+
+## Lecture 67 - Variables and Themes
+* SCSS variables are usually gathered in a settings parial which must be imported first
+* we use vaiables for properties that get repeatedly used
+* a container partial and class helps make a uniform styling of React components like sizing their width
+* CSS classes in JSX are named className
+
+## Lecture 68 - Buttons
+
+* bem convention has a syntax for modifiers baseElement--modifier {}
+* scss supports functions like darken(basecolor, percent)
+
+## Lecture 72 - Media queries
+
+* responsivbe to mobile
+** add <meta name="viewport" content="width=device-width, initial-scale=1"> to html head
+** use in stylesheets @media (min-width: $desktop-breakpoint ) { }
+* add favicon 
+** add a small 16*16 png image in the project
+** add  	<link rel="icon" type="image/png" href="/images/favicon.png" /> to html header
