@@ -440,3 +440,22 @@ import { BrowserRouter, Route } from 'react-router-dom';
 		historyApiFallback: true
 	}
 * the parameter can be set instead in cli in the run script --history-api-fallback
+
+## Lecture 78 - Using Switch to set default page
+
+* we use react router component <Switch /> to wrap our routes adding a default route last. like
+a switch case router goes one by one to find the match and end up in the default one
+
+## Lecture 79 - Linking Routes
+
+* Linking is done with Link Routes Component. Syntax: <Link to="/about">About</Link>
+* For navlnks we use NavLink Routes Component. THis has the active link functionality common
+  to navbars. Syntax: <NavLink activeClassName="is-active" to="/" exact={true}>Dashboard</NavLink>
+* active class allows styling separately the active link
+* Navlink has the same issue with non exact match solved with setting exact prop to true
+
+## Lecture 81 - Routes have props
+
+* Route React Components have a props object passed to the target React Component when called.
+* THe prop object has params and id attributes where we can pash query strigns or ids. e.g 
+  /edit/:id called as /edit/99 passes props.match.params.id =99
