@@ -459,3 +459,53 @@ a switch case router goes one by one to find the match and end up in the default
 * Route React Components have a props object passed to the target React Component when called.
 * THe prop object has params and id attributes where we can pash query strigns or ids. e.g 
   /edit/:id called as /edit/99 passes props.match.params.id =99
+
+# Section 10 - Redux
+
+## Lecture 84 - RIntro
+
+* Redux introduces the app state (Redux State) a more elegant way of keeping track of the app state without passing it from componenct to component thus making components more
+  decoupled and reusable. 
+* Redux is recomended for complex apps where there is no single parrent componnet and where there are multiple leves of hirerchy
+
+## Lecture 85 - Setting up Redux - Store
+
+* Add redux with yarn : yarn add redux@3.7.2
+* import createStore to create a app state store: import  { createStore } from 'redux';
+* call create Store funct setting up deault state: const store =  createStore((state = {count: 10 }) => {
+    return state;
+});
+
+* get the state with store.getState()
+
+## Lecture 86 - Redux Actions 
+
+* Actions : an object that gets sent to the store to change the state
+** Actions are set in the createstore initialization function as second argument. a switch case will
+   determine what will happen depending on the action type. usually a change in a state atribute.(return the modified state object)
+  const store =  createStore((state = {count: 0 }, action) => {
+    switch(action.type) {
+        case 'INCREMENT':
+           return {
+                count: state.count + 1
+           }; 
+        default:
+           return state;  
+    }
+});
+
+** actions are triggered by the store.dispatch calls where an object with the action type is passed
+  store.dispatch({
+    type: 'INCREMENT'
+});
+
+## Lecture 87 - Subscribing and DYnamic Actions
+
+* Subscribing is a method to get notified anytime there is  a change in the state (e.g for rerendering)
+** we subscribe by calling store.subscribe();
+** this method returns a callback function for unsubscribing. e.g const unsubscribe = store.subscribe();
+** we unsubscribe by calling the method. unsubscribe();
+
+* Dynamic actions are achieved by passing a second attribute after the action type in dispatch
+** we can check this attribute in the switchcase to alter our state modification or even pass a s an attribute a state atribute seting its value to a predetermined value
+
