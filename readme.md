@@ -509,3 +509,10 @@ a switch case router goes one by one to find the match and end up in the default
 * Dynamic actions are achieved by passing a second attribute after the action type in dispatch
 ** we can check this attribute in the switchcase to alter our state modification or even pass a s an attribute a state atribute seting its value to a predetermined value
 
+## Lecture 88 - ES6 Object Destructuring
+
+* A way of simplifying reference to object attributes by extracting them eg. const obj = { attr1: 1, attr2: '2'}; const {attr1, attr2 } = obj;
+** suports renaming with : e.g const {attr1: attribute1} = obj. attr1 cannot be reference anymore but obj.attr1 yes
+** supports default value if attr is missing with = e.g const {attr1 = 'attribute1' } = obj
+
+## Lecture 89 - ES6 Array Destructuring
