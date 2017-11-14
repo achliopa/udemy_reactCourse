@@ -576,3 +576,47 @@ const requireAuthentication = (WrappedComponent) => {
         </div>
     );  
 };
+
+## Lecture 101 - Connect Redux Store with React COmponents with React-Redux
+
+* Integration is done with 2 exports of react-redux package: Provider and connect()
+* Provider wraps top level React Component passing in redux store as a prop:
+** Example: const jsx = (
+	<Provider store={store}>
+		<AppRouter />
+	</Provider>
+);
+ReactDOM.render(jsx, document.getElementById('app'));
+
+* Child React Components connect to the Redux State in store with the HOC pattern by wrapping with the connect function into a HOC which gets exported instead. the connect function gets state as input and connects it to the component props by passing it as return object. e.g 
+
+
+// export default  connect((state) => {
+//     return {
+//         expenses: state.expenses  
+//     };
+// })(ExpenseList);
+
+const mapStateToProps = (state) => {
+  return {
+      expenses: state.expenses,
+      filters: state.filters
+  }  
+};
+
+## Lecture 102 - Connect Recux actions to React Components. 
+
+* actions are connected to react components with the HOC pattern using the dispatch method passed to component props. it can be used without mapstatetoprops.
+
+e.g 
+const ExpenseListItem = ({ dispatch, id, description, amount, createdAt}) => (
+	<div>
+		<h3>{description}</h3>
+		<p>{amount}$ Created: {createdAt}</p>
+		<button onClick={() => {
+			dispatch(removeExpense({ id }));
+		}}>Remove</button>
+	</div>
+);
+
+export default connect()(ExpenseListItem);
