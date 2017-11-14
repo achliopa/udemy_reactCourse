@@ -546,3 +546,33 @@ a switch case router goes one by one to find the match and end up in the default
 ## Lecture 93 - ES6 Array Spread Operator
 
 * in reducers we do not alter state but we return new state. ES^ spread operators and array concat help us in that direction. ES^ spread Array example. name = ['john','smith']  newname = [...name, 'Bob'] = ['john', 'smith'. 'bob'] . name stays the same
+
+## Lecture 94 - ES6 Object Spread Operator
+
+* object spread oerator has same syntax as array but with {}, it is experimental. so we need to add it with npm or yarn (babel-plugin-transform-object-rest-spread) and add it to .babelrc (transform-object-rest-spread) 
+
+## Lecture 97
+
+* for sorting out we use mdn array sort method
+
+# Section 11 - React with Redux
+
+## Lecture 100 - Higher Order Component
+
+* HOC is a pattern to bind redux with react components
+// High Order Component (HOC) = A component that renders another component
+// Reuse code
+// REnder hijacking
+// Prop manipulation
+// Abstract state
+* it uses a wrapper function to wrap an existing React component into a higer order component 
+* it is reusable as it can wrapp any component addign some more attributes to it.
+* e.g const AuthInfo = requireAuthentication(Info);
+* 
+const requireAuthentication = (WrappedComponent) => {
+    return (props) => (
+        <div>
+            {props.isAuthenticated? <WrappedComponent {...props} /> : <p>Please log in</p>}
+        </div>
+    );  
+};
