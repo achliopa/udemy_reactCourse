@@ -9,6 +9,7 @@ import  { createStore } from 'redux';
 // });
 
 // simplified with destructuring
+// passing an object, if there is no object we pass an empty object
 const incrementCount = ({incrementBy = 1} = {}) => ({
     type: 'INCREMENT',
     incrementBy
@@ -19,9 +20,20 @@ const decrementCount = ({decrementBy = 1} = {}) => ({
     decrementBy
 });
 
-const setCount = ({})
 
-const store =  createStore((state = {count: 0 }, action) => {
+
+const setCount = ({count}) => ({
+    type: 'SET',
+    count
+});
+
+const resetCount = () => ({
+    type: 'RESET'
+});
+
+// Reducers
+
+const countReducer = (state = {count: 0 }, action) => {
     switch(action.type) {
         case 'INCREMENT':
             // const incrementBy = typeof action.incrementBy === 'number' ? action.incrementBy : 1;
@@ -46,7 +58,9 @@ const store =  createStore((state = {count: 0 }, action) => {
         default:
            return state;  
     }
-});
+};
+
+const store =  createStore(countReducer);
 
 const unsubscribe = store.subscribe(() => {
     console.log(store.getState());
@@ -84,13 +98,19 @@ store.dispatch(decrementCount({
 
 store.dispatch(decrementCount());
 
-store.dispatch({
-    type: 'SET',
+// store.dispatch({
+//     type: 'SET',
+//     count: 101
+// });
+
+store.dispatch(setCount({
     count: 101
-});
+}));
+
+// store.dispatch({
+//     type: 'RESET'
+// });
+
+store.dispatch(resetCount());
 
 unsubscribe();
-
-store.dispatch({
-    type: 'RESET'
-});

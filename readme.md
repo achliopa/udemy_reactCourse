@@ -516,3 +516,33 @@ a switch case router goes one by one to find the match and end up in the default
 ** supports default value if attr is missing with = e.g const {attr1 = 'attribute1' } = obj
 
 ## Lecture 89 - ES6 Array Destructuring
+
+* array destructuring is same as above but we use [] instead of {}
+* there is no renaming. there are default values with = if value is missing
+* order matters
+* we can skip values with nothing between commas
+
+## Lecture 90 = Action Generators
+
+* Action Generators are preferable over inline action objects
+** Typos lead to runtime errors 
+** they return an object with the action type and parameter attribute
+** they can have the extra parameter passes as a function parameter as a destructured object
+
+## Lecture 91 - Reducers
+
+// Reducers
+// 1. Reducers are pure functions (their output is only defined by their input)
+// 2. Never change state or action
+// 3. createStore at previous lectures was a reducer
+
+## Lecture 92 - Combining Reducers, Using Multiple REducers
+
+* we use multiple reducers for complex apps with complex states (with multiple objects, arrays etc). usually each stateful object in state object has its own reducer. reducers are combined with combineReducers: const store = createStore(combineReducers({
+	expenses: expensesReducer,
+	filters: filtersReducer
+	})
+
+## Lecture 93 - ES6 Array Spread Operator
+
+* in reducers we do not alter state but we return new state. ES^ spread operators and array concat help us in that direction. ES^ spread Array example. name = ['john','smith']  newname = [...name, 'Bob'] = ['john', 'smith'. 'bob'] . name stays the same
