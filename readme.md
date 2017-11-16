@@ -620,3 +620,61 @@ const ExpenseListItem = ({ dispatch, id, description, amount, createdAt}) => (
 );
 
 export default connect()(ExpenseListItem);
+
+## Lecture 119 - Install Enzyme 
+
+* yarn add enzyme@3.0.0 enzyme-adapter-react-16@1.0.0 raf@3.3.2
+* create js file $project_root/src/tests/setupTests.js
+* add the following to setupTests.js
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+Enzyme.configure({
+   adapter: new Adapter()
+});
+
+* add jest.config.json file to project root dir
+* add the following to the jest.confi.json file
+{
+    "setupFiles": [
+        "raf/polyfill",
+        "<rootDir>/src/tests/setupTests.js"
+    ]
+}
+
+* modify test script entry in package.json :: "test": "jest --config=jest.config.json"
+* Snapshots of Jest dont work with enzyme wrapped components. lead to fails. need to add a library
+* yarn add enzyme-to-json@3.0.1
+* import toJSON from 'enzyme-to-json';
+* const wrapper = shallow(<Header />);
+  expect(wrapper).toMatchSnapshot(); => expect(toJSON(wrapper)).toMatchSnapshot();
+* add "snapshotSerializers": [
+        "enzyme-to-json/serializer"
+    ] to jest.config.json file. That way we dont need toJSON everytime. we can remove it
+
+## Lecture 120 - Snapshot testing of Dynamic Components
+
+* to dynamic test redux connected react components I need their unconnected version as 
+  I want me to pass the props and to autopass them from redux store. so i make named 
+  exports of unconnected react components for testing purposes.
+
+## Lecture 121 - Mock 3rd party libraries in Jest
+
+* when 3rd party libraries caus test to fail we can mock the test by adding the
+<modulename>.js file in <rootDir>/tests/__mocks__/ folder.
+* in this file we import the actual module and we export a mocked version of the obkects or functions used in our components.
+* e.g. const moment = require.requireActual('moment');
+
+export default (timestamp = 0) => {
+    return moment(timestamp);
+};
+
+## Lecture 123 - Mocked Functions AKA Spies
+
+* Pattern:     const onSubmitSpy = jest.fn(); //spy func
+    onSubmitSpy();
+    expect(onSubmitSpy).toHaveBeenCalled();
+
+const onSubmitSpy = jest.fn(); //spy func
+    onSubmitSpy('Andrew','Philadelphia');
+    expect(onSubmitSpy).toHaveBeenCalledWith('Andrew','Philadelphia');
