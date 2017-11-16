@@ -678,3 +678,16 @@ export default (timestamp = 0) => {
 const onSubmitSpy = jest.fn(); //spy func
     onSubmitSpy('Andrew','Philadelphia');
     expect(onSubmitSpy).toHaveBeenCalledWith('Andrew','Philadelphia');
+
+## lEcture 124 - map dispatch to props
+
+* easier testing, adding spies. clear code
+* syntax : const mapDispatchToProps = (dispatch) => {
+    return {
+      onSubmit: (expense) => dispatch(addExpense(expense))
+    };
+};
+
+// export default connect()(AddExpensePage);
+
+export default connect(undefined, mapDispatchToProps)(AddExpensePage);
