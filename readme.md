@@ -691,3 +691,52 @@ const onSubmitSpy = jest.fn(); //spy func
 // export default connect()(AddExpensePage);
 
 export default connect(undefined, mapDispatchToProps)(AddExpensePage);
+
+# Section 13 - Deploy
+
+## Lecture 133 _ Prepare for Production
+
+* create two separate build entries in package.json
+      "build:dev": "webpack",
+    "build:prod": "webpack -p",
+* make webpack.config.js to export not an object but a faunction returning an object where we can pass 
+  as parameter the environment (https://webpack.js.org/configuration/configuration-types/)
+* pass env as parameter module.exports = (env) => {... by calling the build command with a second argument
+  e.g.    "build:prod": "webpack -p --env production",
+* check in cofig function if env is production and use the proper dev tool
+  devtool: isProduction? 'source-map' : 'cheap-module-eval-source-map',
+  (https://webpack.js.org/configuration/devtool/)
+
+## Lecture 134 - Export CSS to Separate Files for fast loading
+
+* use extract-text-webpack-plugin:  yarn add extract-text-webpack-plugin@3.0.0
+* modify weback.config.js
+  const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CSSExtract = ExtractTextPlugin('styles.css');
+replace use: .... with 
+	use: CSSExtract.extract({
+					use: [
+						'css-loader',
+						'sass-loader'
+					]
+				})
+add: 		plugins: [
+			CSSExtract
+		],
+* source-maps work in production but no in development
+* replace cheap-module-eval-source-map with inline-source-map in devtools
+* change css loaders to objects enabling sourcemap option
+						// 'css-loader',
+						// 'sass-loader'
+						{
+							loader: 'css-loader',
+							options: {
+								sourceMap: true
+							}
+						},
+						{
+							loader: 'sass-loader',
+							options: {
+								sourceMap: true
+							}
+						}
