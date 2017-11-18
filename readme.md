@@ -691,3 +691,53 @@ const onSubmitSpy = jest.fn(); //spy func
 // export default connect()(AddExpensePage);
 
 export default connect(undefined, mapDispatchToProps)(AddExpensePage);
+
+# Section 14 - Firebase
+
+## LEcture 142 - Installing Firebase (google realtime Nosql db)
+
+* make new app
+* go to console
+* develop => database => create realtime database
+* in rules set read,write true
+* go to overview => add firebase to your web app
+* install firebase with npm => yarn add firebase@4.2.0
+* add new folder to <rootdir>/src -> firebase
+* add firebase.js in folder
+* add import * as firebase from 'firebase'; in file (import ALL named exports and add them to the firebase object)
+* configure and initialize db by copypasting google code snippets
+* add import './firebase/firebase'; to app.js
+* test by setting a val 
+firebase.database().ref().set({
+	name: 'Andrew Mead'
+});
+
+* restart server
+* go to firabase db console and see the data
+
+## LEcture 143 - Write to DB
+
+* write with set (read with get?)
+* id i dont pass something to ref all objects are attached to the root
+* set to root overwrites!
+* set an attribute passing reference to it
+
+db.ref().set({
+	name: 'Andrew Mead',
+	age: 26,
+	isSingle: false,
+	location: {
+		city: 'Philadelphia',
+		country: 'USA'
+	}
+});
+
+// db.ref().set('This is my data');
+
+db.ref('age').set(27); // changes only the age
+db.ref('location/city').set('New York'); //set a value two levels deep
+if i se with reference something that is not existing it is added
+
+## Lecture 144 - ES^ Promises
+
+* Nothing new. Firebase supports promises. no cb wraping
