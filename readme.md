@@ -741,3 +741,205 @@ if i se with reference something that is not existing it is added
 ## Lecture 144 - ES^ Promises
 
 * Nothing new. Firebase supports promises. no cb wraping
+
+## Lecture 145 - 148 Set,Remove,Update,Get Data
+
+* Set - Write Data:
+** ref(someRef).set(data) .can pass complete objects.
+** ref().set sets to root
+** set(null) erases data
+
+* Remove
+** ref(someRef).remove()
+
+* Update
+** ref(someRef).update(object). usually object with updates.
+** nested objects updates erase other childs.
+** targeting specific childs with 'father/child': new value
+
+* All data methods return promises
+
+* We get data by asking with the key or by susbscribing to changes
+
+* we fetch data once with the once method. syntax
+
+// db.ref('job/title')
+// 	.once('value')
+// 	.then((snapshot)=> {
+// 		const val = snapshot.val();
+// 		console.log(val);
+// 	})
+// 	.catch((e)=>{
+// 		console.log("error fetching data:",e);
+// 	});
+
+* we subscribe unsubscribe with the on/off method. Syntax : 
+
+// const onValueChange = (snapshot) => {
+// 	console.log(snapshot.val());
+// };
+
+// db.ref().on('value', onValueChange);
+
+
+// setTimeout(() => {
+// 	db.ref('location/country').set('Greece');
+// }, 3500);
+
+// setTimeout(() => {
+// 	// db.ref().off();
+// 	db.ref().off(onValueChange);
+// }, 7500);
+
+// setTimeout(() => {
+// 	db.ref('location/country').set('USA');
+// }, 10500);
+
+## lecture 149-150 - Work with arrays
+
+* Firebase does not support arrays. only objects with object children
+* a way to store arrays is using push
+
+db.ref('notes').push({
+	title: 'Second Note',
+	body: 'This is another note'
+});
+
+* a way to retrieve data as arrays is 
+
+db.ref('expenses')
+	.on('value', (snapshot) => {
+		const expenses = [];
+		snapshot.forEach((childSnapshot) => {
+			expenses.push({
+				id: childSnapshot.key,
+				...childSnapshot.val()
+			});
+		});
+
+		console.log(expenses);
+	});
+
+* other functions supported except from 'value' for value changed for subscribing are , child_added, child_removed, child_changed
+
+# Section 15 - Firebase with Redux
+
+## Lecture 152 - Async Reedux Actions
+
+* component calls action generator
+action generator return object
+component dispatches object
+redux store changes
+
+with firebase component calls action generator
+action generator returns function
+component dispaches function (?)
+function runs (has the ability to dispatch other actions and do whatever it wants)
+
+* redux doesn't allow functions. thus we use redux-thunk
+* yarn add redux-thunk@2.2.0
+* modify configStore to add thunk as redux middleware and add it to the devtools
+* export databse object from firebase to use it in actions
+* make a function to replace addExpense and refactor
+
+// export const addExpense = (
+// 	{
+// 		description = '', 
+// 		note = '', 
+// 		amount = 0, 
+// 		createdAt = 0 
+// 	} ={}
+// ) => ({
+// 	type: 'ADD_EXPENSE',
+// 	expense: {
+// 		id: uuid(),
+// 		description,
+// 		note,
+// 		amount,
+// 		createdAt
+// 	}
+// });
+
+export const addExpense = (expense) => ({
+	type: 'ADD_EXPENSE',
+	expense
+});
+
+export const startAddExpense = (expenseData = {}) => {
+	return (dispatch) => {
+		const {
+			description = '', 
+			note = '', 
+			amount = 0, 
+			createdAt = 0 
+		} = expenseData;
+		const expense = { description, note, amount, createdAt };
+		database.ref('expenses').push(expense).then(() => {
+			dirpatch(addExpense(expense));
+		});
+	};
+};
+
+## Lecture 153 - Testing Redux Async Actions
+
+* we use redux-mock-store to create a mockup redux store for testing
+* we pass done in params to tell jest this is async  test and wait ot finish
+* we use promices and promise chaining
+	import configureMockStore from 'redux-mock-store';
+	import thunk from 'redux-thunk';
+	const createMockStore = configureMockStore([thunk]);
+	const store = createMockStore({});
+	store.dispatch(startAddExpense(expenseData)).then(() => {
+		expect(true).toBe(false);
+		done();
+	});
+
+## Lecture 155 - Setup Test DB
+
+* use cross-env to set env
+* change test script "test": "cross-env NODE_ENV=test jest 
+* modify the webpack.config.js file adding the following
+	process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
+	if (process.env.NODE_ENV === 'test') {
+
+	} else if (process.env.NODE_ENV === 'development') {
+		
+	}
+* add .env.test and .env.development files and add the config variables as KEY+VLUE pairs
+* install dotenv
+* add config in env switch in wepack.config
+	if (process.env.NODE_ENV === 'test') {
+		require('dotenv').config({ path: '.env.test' });
+	} else if (process.env.NODE_ENV === 'development') {
+		require('dotenv').config({ path: '.env.development' });
+	}
+* add a custom plugin to webpack to parse the env variables
+		plugins: [
+			CSSExtract,
+			new webpack.DefinePlugin({
+				'process.env.FIREBASE_API_KEY': JSON.stringify(process.env.FIREBASE_API_KEY),
+				'process.env.FIREBASE_AUTH_DOMAIN': JSON.stringify(process.env.FIREBASE_AUTH_DOMAIN),
+				'process.env.FIREBASE_DATABASE_URL': JSON.stringify(process.env.FIREBASE_DATABASE_URL),
+				'process.env.FIREBASE_PROJECT_ID': JSON.stringify(process.env.FIREBASE_PROJECT_ID),
+				'process.env.FIREBASE_STORAGE_BUCKET': JSON.stringify(process.env.FIREBASE_STORAGE_BUCKET),
+				'process.env.FIREBASE_MESSAGIN_SENDER_ID': JSON.stringify(process.env.FIREBASE_MESSAGIN_SENDER_ID)
+
+			})
+* import webpack into webpack.config
+* replace hardcoded config params with process.env.PARAMS in firebase config object
+* add in setupTests.js
+import DotEnv from 'dotenv';
+DotEnv.config({ path: '.env.test' }); 
+
+## LEcture 157 - Load DB for testing
+
+* before each loads db with test data from fixtures
+* as it is async we use done to make sure that setting database is complete before testing
+beforeEach((done) => {
+	const expensesData = {};
+	expenses.forEach(({ id, description, note, amount, createdAt }) => {
+		expensesData[id] = { description, note, amount, createdAt };
+	});
+	database.ref('expenses').set(expensesData).then(() => done());
+});
