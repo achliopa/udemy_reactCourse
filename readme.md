@@ -1127,3 +1127,45 @@ export default connect(mapStateToProps)(PrivateRoute);
       }
   }
 }
+* complete set of firebase validator rules
+
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+      "users": {
+        "$user_id": {
+          ".read": "$user_id === auth.uid",
+          ".write": "$user_id === auth.uid",
+          "expenses": {
+            "$expense_id": {
+              ".validate": "newData.hasChildren(['description', 'note', 'amount', 'createdAt'])",
+              "description": {
+                ".validate": "newData.isString() && newData.val().length > 0"
+              },
+              "note": {
+                ".validate": "newData.isString()"
+              },
+              "amount": {
+                ".validate": "newData.isNumber()"
+              },
+              "createdAt": {
+                ".validate": "newData.isNumber()"
+              },
+              "$other": {
+                ".validate": false
+              }
+            }
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+  }
+}
+
+* deploy to heroku
+* enable authorization from heroku in firebase
+* authenticatio -> sign in method tab -> authorized domain (localhost is default)
+* add heroku url to authorized domains
