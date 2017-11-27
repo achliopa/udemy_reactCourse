@@ -992,3 +992,102 @@ beforeEach((done) => {
 	});
 	database.ref('expenses').set(expensesData).then(() => done());
 });
+
+## Lecture 158 - Fetch Expenses
+
+* we need to load expenses from DB prior to rendering
+
+# Section 16
+
+## Lecture 162 - Add authentication to Expensify APp
+
+* go to expensify firebase db console
+* check authentication tab 
+* setup sign-up method
+* select google set enable
+* in firebase.js add:
+	const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+	export {firebase, googleAuthProvider, db as default};
+* add stab function to test authentication in app.js
+	firebase.auth().onAuthStateChange((user) => {
+	if(user) {
+		console.log('log in');
+	} else {
+		console.log('log out');
+	}
+});
+* create new action file auth.js to implement auth
+	import { firebase, googleAuthProvider } from '../firebase/firebase';
+
+export const startLogin  = () => {
+	return () => {
+		return firebase.auth().signInWithPopup(googleAuthProvider);
+	};
+};
+* wire up function in Loginpage click action
+		
+export const LoginPage = ({startLogin}) => (
+	<div>
+		<button onClick={startLogin}>Login</button>
+	</div>
+);
+
+const mapDispatchToProps = (dispatch) => ({
+	startLogin: () => dispatch(startLogin())
+});
+
+export default connect(undefined, mapDispatchToProps)(LoginPage);
+
+## Lecture 164 - Add React Routing outside of a React Component
+
+* react router works with browsing history behind the scenes as it is
+  innate to BrowserRouter ReactComponent
+* yarn add history@4.7.2
+* in AppRouter we switch from BroswerRouter to simple Router React Component to which we can pass a sustom history prop
+* the benefit of creating and using a custom history object is that we can export ity to non React component.
+* we use history with import createHistory from 'history/createBrowserHistory';
+	export const history = createHistory();
+	    <Router history={history}>
+* first attempt to mplement authentication by hooks in app.js failure.
+
+## Lecture 165 - Auth Reducer
+
+* best way is to add authentication to redux store
+* add a reducer for auth actions (login,logut)
+* add login, logout actions to set unset uid
+* connect reducer to store
+* dicpatch login,logout in app.js after importing them
+* check correctness in redux dev tools
+
+## Lecture 166 - Set Routes Private
+
+* We use in approuter PrivateRoute instead of Route
+* is a wrapper component we create in src/routers folder
+* we use extensively object destructuring to extract props we want to pass to the Route compnetn through the PrivateROute.
+import React from 'react';
+import { connect } from 'react-redux';
+import { Route, Redirect } from 'react-router-dom';
+import Header from '../components/Header';
+
+export const PrivateRoute = ({ 
+	isAuthenticated, 
+	component: Component,
+	...rest //when destructuring ...rest(orr ...anyrging) contains all the rest that we did not destructure 
+}) => (
+	<Route {...rest} component={(props)=> (
+		isAuthenticated ? (
+			<div>
+				<Header />
+				<Component {...props} />
+			</div>
+		) : (
+			<Redirect to="/" />
+		)
+	)}/>
+);
+
+const mapStateToProps = (state) => ({
+	isAuthenticated: !!state.auth.uid
+});
+
+export default connect(mapStateToProps)(PrivateRoute);
