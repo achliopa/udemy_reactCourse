@@ -1091,3 +1091,39 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(PrivateRoute);
+
+## Lecture 168 - Private Firebase Data
+
+* need to refactor db like this
+	const db = {
+	users: {
+		uid1: {
+			expenses: {
+				expid1: {
+
+				},
+				expid2: {
+
+				}
+			}
+		}
+	}
+};
+* in startAddExpense action return database.ref('users/someuid/expenses')
+* asybc actions in thunk get apart from dispatch all the getState parameter to get the redus store state. we use this to get uid in sthe startAddExpense function to usi it in the db path
+* const uid = getState().auth.uid;
+* return database.ref(`users/${uid}/expenses`)
+* data are not still private in db,
+* in db console rules (docs=>guides=>realtime database=>securityandrules=>secureuserdata=>userid)
+	{
+  "rules": {
+    ".read": false,
+    ".write": false,
+      "users": {
+        "$user_id": {
+          ".read": "$user_id === auth.uid",
+          ".write": "$user_id === auth.uid"
+        }
+      }
+  }
+}
