@@ -1169,3 +1169,26 @@ export default connect(mapStateToProps)(PrivateRoute);
 * enable authorization from heroku in firebase
 * authenticatio -> sign in method tab -> authorized domain (localhost is default)
 * add heroku url to authorized domains
+
+# Section 17 - Styling React
+
+## Lecture 171 - Style Login Page
+
+* add components folder in styles
+* add _box-layout.scss file (partial file)
+* add boxlayout class in div at Login Page
+* add images in public/image folder
+* we import partial in styles.scss with @import './components/box-layout'
+* .box-layout {
+    background: url('/images/bg.jpg');
+}
+* this creates only a line of image
+* solved with 
+	    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+
+## Lecture 172 - Style Buttons
+
+* Refactor Header component
+* remove navlinks leave only homepage as Link wrapped around h1
