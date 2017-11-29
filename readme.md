@@ -1193,35 +1193,10 @@ export default connect(mapStateToProps)(PrivateRoute);
 * Refactor Header component
 * remove navlinks leave only homepage as Link wrapped around h1
 
-## Lecture 175 - SCSS Inheritance
+# Section 19
 
-* use @extend to inherit from another element
-	.select {
-	@extend .text-input;
-	}
-* style direct children of an element with > , * means all
-	.form {
-	display: flex;
-	flex-direction: column;
-	> * {
-		margin-bottom: $m-size;
-	}
-}
+## Lecture 187 - Upgrade from React v15 to React v16
 
-## Lecture 180 - Babel Polyfill
-
-* test the app on different browsers with browserstack.com
-* if older browser doesnt suppor ES5 we are in trouble
-* we use babel polyfill to fix this
-* install it :  yarn add babel-polyfill@6.26.0
-* add it to webpack.config by modifying entry
-			entry: './src/app.js', =>
-			entry: ['babel-polyfill','./src/app.js'],
-
-
-# Section 18
-
-## Lecture 183 - Make the Boilerplate work
-
-* after disecting all expense related code from source
-* name changes
+* work on boilerplate-v2
+* use libs:
+	react@16.0.0-rc3
