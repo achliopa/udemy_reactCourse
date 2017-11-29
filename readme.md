@@ -1217,3 +1217,11 @@ export default connect(mapStateToProps)(PrivateRoute);
 * add it to webpack.config by modifying entry
 			entry: './src/app.js', =>
 			entry: ['babel-polyfill','./src/app.js'],
+
+
+# Section 18
+
+## Lecture 183 - Make the Boilerplate work
+
+* after disecting all expense related code from source
+* name changes
